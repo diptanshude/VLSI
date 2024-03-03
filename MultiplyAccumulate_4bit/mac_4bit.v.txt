@@ -1,0 +1,43 @@
+module mac_4bit(input [3:0] a, b , input clk,rst,output[9:0] y );
+wire [3:0] w1,w2;
+wire [7:0] w3,w4;
+wire [9:0] w5,w6;
+assign w3=w1*w2;
+assign w5 = w4+w6;
+pipo_4bit_20BEE0016 reg1(a,clk,rst,w1);
+pipo_4bit_20BEE0016 reg2(b,clk,rst,w2);
+pipo_8bit_20BEE0016 reg3(w3,clk,rst,w4);
+pipo_10bit_20BEE0016 reg4(w5,clk,rst,w6);
+assign y = w6;
+endmodule
+
+module pipo_4bit(
+input [3:0] d,
+input clk,
+input rst,
+output reg [3:0] q
+);
+always@(posedge clk or negedge rst)
+if(!rst)
+q<=4’b0000;
+else
+q<=d;
+endmodule
+
+module pipo_8bit_20BEE0016(input[7:0] d,input clk,rst,output reg [7:0] q);
+always@ (posedge clk or negedge rst)
+if(!rst)
+q<=8’b00000000;
+else
+q<=d;
+endmodule
+
+module pipo_10bit_20BEE0016(input[9:0] d,input clk,rst,output reg[9:0] q);
+always@(posedge clk or negedge rst)
+if(!rst)
+q<=10’b0000000000;
+else
+q<=d;
+endmodule
+
+

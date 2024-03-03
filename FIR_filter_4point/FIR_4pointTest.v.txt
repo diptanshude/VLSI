@@ -1,0 +1,23 @@
+module FIR_4pointTest();
+    reg[3:0] x;
+    reg clk,rst;
+    wire[8:0] y;
+    FIR_4point uut(x,clk,rst,y);
+    initial begin
+    rst = 1'b0;
+    clk = 1'b0;
+    #10;
+    rst = 1'b1;
+    x = 4'b0001;
+    #10;
+    x = 4'b0010;
+    #10;
+    x = 4'b0011;
+    #10;
+    x = 4'b0100;
+    #10;
+    x = 4'b0000;
+    end
+    always #5
+     clk = ~clk;
+endmodule

@@ -1,0 +1,32 @@
+module wal_tree_4bit (input [3:0] a,b, output [7:0] p);
+    assign p[0] = a[0]&b[0];
+    wire [22:1] w;
+    fa_df fa1 ((a [0] & b [2]), (a[1] & b[1]), (a [2] & b [0]), w[2], w [3]);
+    fa_df fa2 ((a [1] & b [2]), (a[2] & b[1]), (a [3] & b [0]), w[4], w [5]);
+    fa_df fa3 ((a [3] & b [1]), (a[2] & b[2]), (a [1] & b [3]), w[6], w [7]);
+    fa_df fa4 (w[4], (a[0] & b[3]) ,w[3], w[11], w[12]);
+    fa_df fa5 (w[13],w[12],w[19], p[4], w[20]);
+    fa_df fa6 (w[15],w[14],w[20], p[5], w[21]);
+    fa_df fa7 (w[17],w[16],w[21], p[6], w[22]);
+    
+    
+    ha_df ha1 ((a [0] & b [1]), (a[1] & b[0]), p[1], w[1]);
+    ha_df ha2 ((a [2] & b [3]), (a[3] & b[2]), w[8], w[9]);
+    ha_df ha3 (w[1], w[2], p[2], w[10]);
+    ha_df ha4 (w[6], w[5], w[13], w[14]);
+    ha_df ha5 (w[8], w[7], w[15], w[16]);
+    ha_df ha6 (w[9], a[3]&b[3], w[17], w[18]);
+    ha_df ha7 (w[10], w[11], p[3], w[19]);
+    
+    xor x1 (p[7],w[18],w[22]);
+endmodule
+
+module fa_df(input a,b,cin,output s,cout);
+     assign s = a^b^cin;
+     assign cout = (a&b)|(b&cin)|(a&cin);
+endmodule
+
+module ha_df(input a,b,output s,cout);
+     assign s = a^b;
+     assign cout = a&b;
+endmodule

@@ -1,0 +1,37 @@
+module bin_sq_6bit(
+    input [5:0] a,
+    output [11:0] p
+    );
+    
+    wire [19:1] w;
+    assign p[0] = a[0] ; 
+    assign p[1] = 1'b0 ;
+    assign p[2] = a[1]&(~a[0]);
+    fa_df fa1((a[2]&a[1]),(a[0]&a[4]),(a[1]&a[3]),w[1],w[2]);
+    fa_df fa2((a[3]&(~a[2])),(a[0]&a[5]),(a[1]&a[4]),w[3],w[4]);
+    fa_df fa3((a[2]&(a[3])),(a[1]&a[5]),(a[2]&a[4]),w[5],w[6]);
+    ha_df ha1((a[4]&(~a[3])),(a[2]&a[5]),w[7],w[8]);
+    ha_df ha2((a[4]&(a[3])),(a[3]&a[5]),w[9],w[10]);
+    
+    ha_df ha3((a[1]&(a[0])),(a[2]&a[0]),p[3],w[11]);
+    fa_df fa4((a[3]&(a[0])),(a[2]&(~a[1])),w[11],p[4],w[12]);
+    ha_df ha4(w[1],w[12],p[5],w[13]);
+    fa_df fa5(w[2],w[3],w[13],p[6],w[14]);
+    fa_df fa6(w[4],w[5],w[14],p[7],w[15]);
+    fa_df fa7(w[6],w[7],w[15],p[8],w[16]);
+    fa_df fa8(w[8],w[9],w[16],p[9],w[17]);
+    fa_df fa9(w[10],(a[5]&(~a[4])),w[17],p[10],w[18]);
+    ha_df ha5(w[18],(a[5]&a[4]),p[11],w[19]);
+    
+endmodule
+
+module fa_df(input a,b,cin,  output s,cout);
+     assign s = a^b^cin;
+     assign cout = (a&b)|(b&cin)|(a&cin);
+endmodule
+
+module ha_df( input a,b, output s,cout );
+   assign s = a^b;
+   assign cout = (a&b) ;
+endmodule
+

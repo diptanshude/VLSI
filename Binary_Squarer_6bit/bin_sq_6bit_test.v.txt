@@ -1,0 +1,13 @@
+module bin_sq_6bit_test();
+    reg[5:0] a;
+    wire[11:0] p;
+    reg[11:0] check;
+    bin_sq_6bit uut(a,p);
+    initial repeat(10)
+   begin
+    a=$random;
+    check = a*a;
+    #10;
+    $display($time,"%d^2=%d(%d)",a,p,check);
+   end 
+endmodule
